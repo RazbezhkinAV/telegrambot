@@ -22,7 +22,7 @@ class SendBotMessageServiceTest {
         sendBotMessageService = new SendBotMessageServiceImpl(telegramBot);
     }
     @Test
-    public void shouldProperlySendMessage() throws TelegramApiException{
+    void shouldProperlySendMessage() throws TelegramApiException{
 
         String chatId = "test_chat_id";
         String message = "test_message";

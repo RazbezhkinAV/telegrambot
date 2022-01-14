@@ -2,21 +2,18 @@ package com.razbezhkinav.telegrambot.bot;
 
 import com.razbezhkinav.telegrambot.command.CommandContainer;
 import com.razbezhkinav.telegrambot.service.SendBotMessageServiceImpl;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.razbezhkinav.telegrambot.service.TelegramUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import static com.razbezhkinav.telegrambot.command.CommandName.NO;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
-    private final String COMMAND_PREFIX = "/";
+    private static final String COMMAND_PREFIX = "/";
     private final CommandContainer commandContainer;
 
     @Value("${bot.name}")
@@ -25,8 +22,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String token;
 
-    public TelegramBot(){
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
+
+    public TelegramBot(TelegramUserService telegramUserService){
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this),telegramUserService);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 String commandIdentifier = message.split(" ")[0].toLowerCase();
                 commandContainer.retrieveCommand(commandIdentifier).execute(update);
             } else {
-                commandContainer.retrieveCommand(NO.getCommandName()).execute(update);
+                commandContainer.retrieveCommand(NO.getName()).execute(update);
             }
 
         }
