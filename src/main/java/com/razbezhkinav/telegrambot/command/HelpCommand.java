@@ -1,7 +1,6 @@
 package com.razbezhkinav.telegrambot.command;
 
 import com.razbezhkinav.telegrambot.service.SendBotMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.razbezhkinav.telegrambot.command.CommandName.*;
@@ -14,10 +13,10 @@ public class HelpCommand implements Command {
                     + "<b>Начать\\закончить работу с ботом</b>\n"
                     + "%s - начать работу \n"
                     + "%s - приостановить работу \n\n"
-                    + "%s - получить помощь в работе \n",
-            START.getCommandName(), STOP.getCommandName(), HELP.getCommandName());
+                    + "%s - получить помощь в работе \n"
+                    + "%s - получить статистику \n",
+            START.getName(), STOP.getName(), HELP.getName(), STAT.getName());
 
-    @Autowired
     public HelpCommand(SendBotMessageService service) {
         this.service = service;
     }
